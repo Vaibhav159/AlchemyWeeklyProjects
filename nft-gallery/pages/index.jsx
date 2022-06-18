@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { NFTCard } from "./components/nftCard";
+import { Pagination } from "./components/pagination";
 
 const Home = () => {
   const apiKey = process.env.API_KEY;
+  const nftPerPage = 12;
 
   const [wallet, setWalletAddress] = useState(''); 
   const [collection, setCollectionAddress] = useState('');
@@ -59,6 +61,7 @@ const Home = () => {
 
     if (nfts){
       console.log("NFTs fetched by collection address");
+      console.log(nfts);
       setNfts(nfts.nfts);
     }
 
@@ -110,6 +113,8 @@ const Home = () => {
           })
         }
       </div>
+
+      <Pagination hide={fetchForCollection} nftPerPage={nftPerPage} totalNfts={100}/>
     </div>
   )
 }
