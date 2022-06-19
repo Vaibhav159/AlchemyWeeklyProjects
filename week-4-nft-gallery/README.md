@@ -1,6 +1,11 @@
-# Next.js + Tailwind CSS Example
+# ROAD TO WEB3 Weekly Learning Challenges (Week 4)
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+This week's challenge is to create an NFT gallery using Alchemy's NFT API. Tutorial is found [here](https://docs.alchemy.com/alchemy/road-to-web3/weekly-learning-challenges/4.-how-to-create-an-nft-gallery-alchemy-nft-api).
+
+## How does this gallery work?
+By entering either a Ethereum wallet address or contract address you are able to fetch a list of owned NFT.
+
+*Only NFTs minted on Ethereum's Mainnet will be fetched.* 
 
 ## Deploy your own
 
@@ -21,3 +26,21 @@ pnpm create next-app --example with-tailwindcss with-tailwindcss-app
 ```
 
 Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
+
+## How can I run this locally?
+
+### Prerequisite 
+* Log into [Alchemy](https://www.alchemy.com/) and create your own Ethereum Mainnet application. Save your API Key, you're going to need it. 
+
+
+### Next
+```bash
+git clone https://github.com/Vaibhav159/AlchemyWeeklyProjects.git
+cd into week_4_nft_gallery.
+npm install
+Create the .env.local file in your code editor
+Add the "API_KEY" value with your own Alchemy Ethereum Mainnet App Api Key. 
+Save .env.local
+npm run dev
+```
