@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { NFTCard } from "./components/nftCard";
+import  NFTCard from "./components/nftCard";
 import ReactPaginate from 'react-paginate';
-import { Pagination } from "./components/pagination";
 
 const Home = () => {
   const apiKey = process.env.API_KEY;
@@ -21,6 +20,7 @@ const Home = () => {
   const fetchNfts = async () => {
 
     let nfts;
+    setTotalNfts(0);
     console.log("Fetching NFTs");
     const baseURL = `https://eth-mainnet.alchemyapi.io/nft/v2/${apiKey}/getNFTs/`;
     let fetchURL;
@@ -133,8 +133,8 @@ const Home = () => {
 
       <div className="flex flex-wrap gap-y-12 mt-4 w-5/16 gap-x-2 justify-center">
         {
-          nfts.length > 0 && nfts.map(nft => {
-            return <NFTCard nft={nft}/>
+          nfts.length > 0 && nfts.map((nft, index) => {
+            return <NFTCard nft={nft} key={index}/>
           })
         }
       </div>

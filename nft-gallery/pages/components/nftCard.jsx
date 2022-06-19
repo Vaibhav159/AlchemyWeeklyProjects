@@ -1,4 +1,4 @@
-export const NFTCard = ({nft}) => {
+const NFTCard = ({nft}) => {
     return (
 
         <div className="w-1/4 flex flex-col ">
@@ -12,8 +12,9 @@ export const NFTCard = ({nft}) => {
                 <div>
                     <h2 className="text-xl text-gray-800">{nft.title}</h2>
                     <p className="text-gray-600">Id: {nft.id.tokenId.substr(nft.id.tokenId.length - 4)}</p>
-                    <button onClick={() =>  navigator.clipboard.writeText(nft.contract.address)}>
-                        <p className="text-gray-600">
+                    <button className="cursor-pointer"
+                    onClick={() =>  navigator.clipboard.writeText(nft.contract.address)}>
+                        <p className="no-underline text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer">
                             {nft.contract.address.substr(0,5)}...{nft.contract.address.substr(nft.contract.address.length - 4)}
                         </p>
                     </button>
@@ -41,3 +42,5 @@ export const NFTCard = ({nft}) => {
         </div>
     )
 }
+
+export default NFTCard;
