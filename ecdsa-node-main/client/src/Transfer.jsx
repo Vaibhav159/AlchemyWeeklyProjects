@@ -15,10 +15,6 @@ function Transfer({ address, setBalance, privateKey }) {
 
     const [signature, recoveryBit] = await signMessage(msg, privateKey);
 
-    console.log("signature", signature, "recoveryBit", recoveryBit);
-
-    console.log(await recoveryKeyAddress(msg, signature, recoveryBit), typeof signature, typeof recoveryBit);
-
     try {
       const {
         data: { balance },

@@ -20,7 +20,7 @@ app.get("/balance/:address", (req, res) => {
 });
 
 app.post("/send", (req, res) => {
-  const { recipient, amount, signature, recoveryBit, msg } = req.body;
+  const { sender, recipient, amount, signature, recoveryBit, msg } = req.body;
 
   const sigValues = Object.keys(signature).map(function(key){
     return signature[key];
@@ -28,7 +28,11 @@ app.post("/send", (req, res) => {
 
   const finalSign = new Uint8Array(sigValues)
 
-  const sender = recoveryKeyAddress(msg, finalSign, recoveryBit);
+  const derivedSender = recoveryKeyAddress(msg, finalSign, recoveryBit);
+
+  if (derivedSender !== sender) {
+    res.status(400).send({ message: "Invalid signature!" });
+  }
 
   setInitialBalance(sender);
   setInitialBalance(recipient);
