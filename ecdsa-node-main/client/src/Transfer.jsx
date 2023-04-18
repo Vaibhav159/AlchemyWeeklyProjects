@@ -1,7 +1,8 @@
 import { useState } from "react";
 import server from "./server";
+import { signMessage, recoveryKeyAddress } from '/src/signMsg.js';
 
-function Transfer({ address, setBalance }) {
+function Transfer({ address, setBalance, privateKey }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
@@ -10,13 +11,23 @@ function Transfer({ address, setBalance }) {
   async function transfer(evt) {
     evt.preventDefault();
 
+    const msg = `I am signing my one-time nonce: ${sendAmount}`;
+
+    const [signature, recoveryBit] = await signMessage(msg, privateKey);
+
+    console.log("signature", signature, "recoveryBit", recoveryBit);
+
+    console.log(await recoveryKeyAddress(msg, signature, recoveryBit), typeof signature, typeof recoveryBit);
+
     try {
       const {
         data: { balance },
       } = await server.post(`send`, {
-        sender: address,
         amount: parseInt(sendAmount),
-        recipient,
+        recipient: recipient,
+        signature: signature,
+        recoveryBit: recoveryBit,
+        msg: msg,
       });
       setBalance(balance);
     } catch (ex) {

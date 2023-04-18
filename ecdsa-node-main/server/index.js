@@ -1,3 +1,4 @@
+const {recoveryKeyAddress} = require("./scripts/signMsg.js");
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -7,9 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 const balances = {
-  "0x1": 100,
-  "0x2": 50,
-  "0x3": 75,
+  "fbe842447296311c5351ece405661639767859ab": 100,
+  "ac3bfb76cb8345047c26759495f955a72924d53a": 50,
+  "76a6a2416e71b2072d0e647a8c74ed3fc7850dd4": 75,
 };
 
 app.get("/balance/:address", (req, res) => {
@@ -19,7 +20,15 @@ app.get("/balance/:address", (req, res) => {
 });
 
 app.post("/send", (req, res) => {
-  const { sender, recipient, amount } = req.body;
+  const { recipient, amount, signature, recoveryBit, msg } = req.body;
+
+  const sigValues = Object.keys(signature).map(function(key){
+    return signature[key];
+  });
+
+  const finalSign = new Uint8Array(sigValues)
+
+  const sender = recoveryKeyAddress(msg, finalSign, recoveryBit);
 
   setInitialBalance(sender);
   setInitialBalance(recipient);
