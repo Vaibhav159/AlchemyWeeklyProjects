@@ -1,0 +1,14 @@
+version: '3'
+services:
+  client:
+    build: ./client
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host=0.0.0.0    # Add --host option here
+    depends_on:
+      - server
+
+  server:
+    build: ./server
+    ports:
+      - "3042"
