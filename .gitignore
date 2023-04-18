@@ -1,1 +1,8 @@
 .DS_Store
+
+# add all .env files like .env, .env.local, .env.dev, .env.test, .env.prod, etc. in the root directory and all subdirectories
+**/.env*
+
+# do the same for .next folder and node_modules
+**/.next
+**/node_modules
