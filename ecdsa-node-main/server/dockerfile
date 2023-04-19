@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3042
 
 # Start the server app
-CMD ["node", "index"]
+CMD ["nodemon", "index"]

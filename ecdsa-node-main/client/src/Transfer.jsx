@@ -1,7 +1,11 @@
 import { useState } from "react";
 import server from "./server";
+import { signMessage, recoveryKeyAddress } from '/src/signMsg.js';
 
-function Transfer({ address, setBalance }) {
+import detectEthereumProvider from '@metamask/detect-provider';
+
+
+function Transfer({ address, setBalance, privateKey }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
@@ -10,13 +14,20 @@ function Transfer({ address, setBalance }) {
   async function transfer(evt) {
     evt.preventDefault();
 
+    const msg = `I am signing my one-time nonce: ${sendAmount}`;
+
+    const [signature, recoveryBit] = await signMessage(msg, privateKey);
+
     try {
       const {
         data: { balance },
       } = await server.post(`send`, {
         sender: address,
         amount: parseInt(sendAmount),
-        recipient,
+        recipient: recipient,
+        signature: signature,
+        recoveryBit: recoveryBit,
+        msg: msg,
       });
       setBalance(balance);
     } catch (ex) {
@@ -24,8 +35,49 @@ function Transfer({ address, setBalance }) {
     }
   }
 
+  async function transferV2(evt){
+    evt.preventDefault();
+
+    const provider = await detectEthereumProvider();
+
+    if (provider) {
+      console.log('MetaMask is installed!');
+    } else {
+      alert('Please install MetaMask!');
+    }
+
+    const msg = `I am signing my one-time nonce: ${sendAmount}`;
+
+    const signer = await provider.request({
+      method: 'personal_sign',
+      params: [msg, address, "Example password"]
+    })
+
+    console.log(signer);
+    // get recoveryBit from signer
+    const recoveryBit = signer.slice(130, 132);
+    console.log(recoveryBit);
+
+    try {
+      const {
+        data: { balance },
+      } = await server.post(`send`, {
+        sender : address,
+        amount: parseInt(sendAmount),
+        recipient: recipient,
+        signature: signer,
+        recoveryBit: recoveryBit,
+        msg: msg,
+      });
+      setBalance(balance);
+    }
+    catch (ex) {
+      alert(ex.response.data.message);
+    }
+  }
+
   return (
-    <form className="container transfer" onSubmit={transfer}>
+    <form className="container transfer" onSubmit={transferV2}>
       <h1>Send Transaction</h1>
 
       <label>

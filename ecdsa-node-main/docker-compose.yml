@@ -4,7 +4,10 @@ services:
     build: ./client
     ports:
       - "5173:5173"
-    command: npm run dev -- --host=0.0.0.0    # Add --host option here
+    command: npm run dev -- --host=0.0.0.0
+    volumes:
+      - ./client:/app          # Mount the client folder as a volume
+      - /app/node_modules      # Add a volume for node_modules inside the container
     depends_on:
       - server
 
@@ -12,3 +15,7 @@ services:
     build: ./server
     ports:
       - "3042:3042"
+    command: node index
+    volumes:
+      - ./server:/app          # Mount the server folder as a volume
+      - /app/node_modules      # Add a volume for node_modules inside the container
