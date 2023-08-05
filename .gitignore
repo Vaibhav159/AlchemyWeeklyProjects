@@ -6,3 +6,4 @@
 # do the same for .next folder and node_modules
 **/.next
 **/node_modules
+**/message.json
