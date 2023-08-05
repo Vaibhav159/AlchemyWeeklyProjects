@@ -1,0 +1,19 @@
+version: '3'
+services:
+  server:
+    build:
+      context: ./  # Assuming the Dockerfile is in the project root
+      dockerfile: server/Dockerfile
+    ports:
+      - '1225:1225'
+    expose:
+      - 1225
+
+  client:
+    build:
+      context: ./  # Assuming the Dockerfile is in the project root
+      dockerfile: client/Dockerfile
+
+    depends_on:
+      - server
+      
